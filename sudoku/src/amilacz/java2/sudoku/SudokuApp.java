@@ -11,18 +11,11 @@ public class SudokuApp {
 	public static void main(String[] args) {
 
 		try {
-			Workbook workbook = WorkbookFactory.create(new File("D:\\Documents\\podyplomowka\\cwiczenia\\java2-2\\cwiczenia\\sudoku\\sudoku.xlsx"));
+			Workbook workbook = WorkbookFactory.create(new File("sudoku.xlsx"));
 			SudokuBoardChecker sbc =new SudokuBoardChecker(workbook);
-			boolean checkIfOK = sbc.verifyBoardStructure(0);
-			System.out.println("board has right structure: "+checkIfOK);
-			if (checkIfOK) {
-				if(sbc.verifyBoardCorrectness(0)) {
-					System.out.println("board has right values");
-				}else {
-					System.out.println("some values are repeated");
-				}
+			for (int i =0; i<7;i++){
+				System.out.println("Board number " + (i +1) + " result: "+sbc.verifyBoardStructure(i));
 			}
-			
 		} catch (EncryptedDocumentException | InvalidFormatException | IOException e) {
 			e.printStackTrace();
 		}
