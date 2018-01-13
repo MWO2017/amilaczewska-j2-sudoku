@@ -11,7 +11,7 @@ public class SudokuApp {
 	public static void main(String[] args) {
 
 		try {
-			Workbook workbook = WorkbookFactory.create(new File("D:\\Documents\\podyplomowka\\cwiczenia\\java2-2\\cwiczenia\\sudoku\\sudoku.xlsx"));
+			Workbook workbook = WorkbookFactory.create(new File("D:\\Documents\\podyplomowka\\cwiczenia\\java2-2\\cwiczenia\\sudoku\\sudoku-m.xlsx"));
 			SudokuBoardChecker sbc =new SudokuBoardChecker(workbook);
 			boolean checkIfOK = sbc.verifyBoardStructure(0);
 			System.out.println("board has right structure: "+checkIfOK);

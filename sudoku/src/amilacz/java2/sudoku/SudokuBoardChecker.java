@@ -85,20 +85,7 @@ public class SudokuBoardChecker {
 			Row row = sheet.getRow(i);
 			HashMap<Double, Integer> rowMap = new HashMap<>();
 			for (int j = 0; j < 9; j++) {
-				if (row != null) {
-					Cell cell = row.getCell(j);
-					if (cell != null) {
-						CellType cellType = cell.getCellTypeEnum();
-						if (cellType.equals(CellType.NUMERIC)) {
-							value = cell.getNumericCellValue(); // czy deklaracje lepiej dawac przed petla?
-							if (countUniquenessOfValues(rowMap, value) == false) {
-								System.out.println("in row " + (i + 1) + ", in column " + (j + 1)); // jesli (i+1) bez nawiasow, to nastepuje konkatenacja
-								// napisow
-								isOK = false;
-							}
-						}
-					} 
-				}
+				isOK=verifyCell(row, j, i, rowMap, "in row; ");
 			}
 		}
 		return isOK;
@@ -112,19 +99,7 @@ public class SudokuBoardChecker {
 			HashMap<Double, Integer> columnMap = new HashMap<>();
 			for (int i = 0; i < 9; i++) {
 				Row row = sheet.getRow(i);
-				if (row != null) {
-					Cell cell_col = row.getCell(j);
-					if (cell_col != null) {
-						CellType cellType = cell_col.getCellTypeEnum();
-						if (cellType.equals(CellType.NUMERIC)) {
-							double value = cell_col.getNumericCellValue();
-							if (countUniquenessOfValues(columnMap, value) == false) {
-								System.out.println("in column " + (j + 1) + ", in row " + (i + 1));
-								isOK = false;
-							}
-						}
-					} 
-				}
+				isOK=verifyCell(row, j, i, columnMap, "in column; ");
 			}
 		}
 		return isOK;
@@ -149,22 +124,10 @@ public class SudokuBoardChecker {
 		boolean isOK = true;
 		HashMap<Double, Integer> squareMap = new HashMap<>();
 
-		for (int j = (r / 3) * 3; j < (r / 3) * 3 + 3; j++) {
-			Row row = sheet.getRow(j);
-			for (int i = (c / 3) * 3; i < (c / 3) * 3 + 3; i++) {
-				if (row != null) {
-					Cell cell = row.getCell(i);
-					if (cell != null) {
-						CellType cellType = cell.getCellTypeEnum();
-						if (cellType.equals(CellType.NUMERIC)) {
-							double value = cell.getNumericCellValue();
-							if (countUniquenessOfValues(squareMap, value) == false) {
-								System.out.println("in square in row " + (j + 1) + ", in column " + (i + 1));
-								isOK = false;
-							}
-						}
-					} 
-				}
+		for (int i = (r / 3) * 3; i < (r / 3) * 3 + 3; i++) {
+			Row row = sheet.getRow(i);
+			for (int j = (c / 3) * 3; j < (c / 3) * 3 + 3; j++) {
+				isOK=verifyCell(row, j, i, squareMap, "in square; ");
 			}
 		}
 		return isOK;
@@ -179,6 +142,25 @@ public class SudokuBoardChecker {
 			isOK = false;
 		} else {
 			map.put(value, 1);
+		}
+		return isOK;
+	}
+	
+	private boolean verifyCell(Row row, int i, int j, HashMap<Double, Integer> map, String toPrint) {
+		boolean isOK = true;
+		if (row != null) {
+			Cell cell = row.getCell(i);
+			if (cell != null) {
+				CellType cellType = cell.getCellTypeEnum();
+				if (cellType.equals(CellType.NUMERIC)) {
+					double value = cell.getNumericCellValue();
+					if (countUniquenessOfValues(map, value) == false) {
+						System.out.println(toPrint+"in row " + (j + 1) + ", in column " + (i + 1)); // jesli (i+1) bez nawiasow, to nastepuje konkatenacja
+						// napisow
+						isOK = false;
+					}
+				}
+			} 
 		}
 		return isOK;
 	}
